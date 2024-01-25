@@ -1,0 +1,107 @@
+prefixes:
+  idlab-fn: "https://w3id.org/imec/idlab/function#"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  era: "http://data.europa.eu/949/"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era-tenclass: "http://data.europa.eu/949/concepts/ten-classifications/rinf/"
+  era-linecat: "http://data.europa.eu/949/concepts/line-category/rinf/"
+  era-fc: "http://data.europa.eu/949/concepts/freight-corridor/rinf/"
+  era-gaugings: "http://data.europa.eu/949/concepts/gaugings/rinf/"
+  era-ntg: "http://data.europa.eu/949/concepts/nominal-track-gauges/rinf/"
+  
+sources:
+  op-track-source: ['dataset/data.xml~xpath','/RINFData/OperationalPoint/OPTrack']
+
+mappings:
+  # ------------ 1.2.1.0.0 Generic information --------------
+  op-track:
+    sources:
+      - op-track-source
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(parent::*/UniqueOPID/@Value)_$(OPTrackIdentification/@Value)
+    po:
+      - [a, era:Track]
+      - [rdfs:label, $(OPTrackIdentification/@Value)]
+      - [era:imCode, $(OPTrackIMCode/@Value)]
+      - [era:trackId, $(OPTrackIdentification/@Value)]
+      - [era:validityStartDate , "$((@ValidityDateStart,'1970-01-01'\)[1])", xsd:date]
+      - [era:validityEndDate, "$((@ValidityDateEnd,'3100-12-31'\)[1])", xsd:date]
+    graph: ${NAMED_GRAPH}
+
+  # ------------ Declarations of verification for track --------------
+  ec-verification: # 1.2.1.0.1.1
+    sources:
+      - op-track-source
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(parent::*/UniqueOPID/@Value)_$(OPTrackIdentification/@Value)
+    po:
+      - [era:verificationINF, "$(OPTrackParameter[@ID='IDE_ECVerification' and @IsApplicable='Y']/@Value)"]  #verificationINF
+    graph: ${NAMED_GRAPH}
+
+  ei-demonstration: # 1.2.1.0.1.2
+    sources:
+      - op-track-source
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(parent::*/UniqueOPID/@Value)_$(OPTrackIdentification/@Value)
+    po:
+      - [era:demonstrationINF, "$(OPTrackParameter[@ID='IDE_EIDemonstration' and @IsApplicable='Y']/@Value)"] # demonstrationINF
+    graph: ${NAMED_GRAPH}
+
+  # ------------ Performance parameters --------------
+  ten-class: # 1.2.1.0.2.1
+    sources:
+      - op-track-source
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(parent::*/UniqueOPID/@Value)_$(OPTrackIdentification/@Value)
+    po:
+      - [era:tenClassification, "era-tenclass:$(OPTrackParameter[@ID='IPP_TENClass' and @IsApplicable='Y']/@Value)~iri"] #  TEN classification of track
+    graph: ${NAMED_GRAPH}
+
+  line-cat: # 1.2.1.0.2.2
+    sources:
+      - op-track-source
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(parent::*/UniqueOPID/@Value)_$(OPTrackIdentification/@Value)
+    po:
+      - [era:lineCategory, "era-linecat:$(OPTrackParameter[@ID='IPP_LineCat' and @IsApplicable='Y']/@Value)~iri"] # / Category of Line
+    graph: ${NAMED_GRAPH}
+
+  freight-corridor: # 1.2.1.0.2.3
+    sources:
+      - op-track-source
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(parent::*/UniqueOPID/@Value)_$(OPTrackIdentification/@Value)
+    po:
+      - [era:freightCorridor, "era-fc:$(OPTrackParameter[@ID='IPP_FreightCorridor' and @IsApplicable='Y']/@Value)~iri"] #  Part of a Railway freight corridor
+    graph: ${NAMED_GRAPH}
+
+  # ------------ Line layout --------------
+  gauging: # 1.2.1.0.3.4
+    sources:
+      - op-track-source
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(parent::*/UniqueOPID/@Value)_$(OPTrackIdentification/@Value)
+    po:
+      - [era:gaugingProfile, "era-gaugings:$(OPTrackParameter[@ID='ILL_Gauging' and @IsApplicable='Y']/@Value)~iri"] # gaugingProfile
+    graph: ${NAMED_GRAPH}
+
+  gauging-check-locations: # 1.2.1.0.3.5
+    sources:
+      - op-track-source
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(parent::*/UniqueOPID/@Value)_$(OPTrackIdentification/@Value)
+    po:
+      - [era:gaugingCheckLocation, "$(OPTrackParameter[@ID='ILL_GaugeCheckLoc' and @IsApplicable='Y']/@Value)"] # gaugingCheckLocation
+    graph: ${NAMED_GRAPH}
+
+  gauging-transversal-document: # 1.2.1.0.3.6
+    sources:
+      - op-track-source
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(parent::*/UniqueOPID/@Value)_$(OPTrackIdentification/@Value)
+    po:
+      - [era:gaugingTransversalDocument, "$(OPTrackParameter[@ID='ILL_GaugeCheckDocRef' and @IsApplicable='Y']/@Value)"] # gaugingTransversalDocument
+      # <SOLTrackParameter Value="Obstacles Binod Dsi.xlsx" IsApplicable="Y" ID="ILL_GaugeCheckDocRef"/>
+
+    graph: ${NAMED_GRAPH}
+    
+  # ------------Track parameters --------------
+  nominal-track-gauge: # 1.2.1.0.4.1
+    sources:
+      - op-track-source
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(parent::*/UniqueOPID/@Value)_$(OPTrackIdentification/@Value)
+    po:
+      - [era:wheelSetGauge, "era-ntg:$(OPTrack/OPTrackParameter[@ID='ITP_NomGauge' and @IsApplicable='Y']/@Value)~iri"] #  wheelSetGauge
+    graph: ${NAMED_GRAPH}

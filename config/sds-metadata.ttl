@@ -1,0 +1,62 @@
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix p-plan: <http://purl.org/net/p-plan#> .
+@prefix prov:   <http://www.w3.org/ns/prov#> .
+@prefix sds:    <https://w3id.org/sds#> .
+@prefix dcat:   <https://www.w3.org/ns/dcat#> .
+@prefix ex:     <http://example.org/ns#>.
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#>.
+@prefix sh:     <http://www.w3.org/ns/shacl#>.
+@prefix void:   <http://rdfs.org/ns/void#> .
+@prefix ldes:   <https://w3id.org/ldes#>.
+@prefix dct:    <http://purl.org/dc/terms/>.
+
+ex:RINF_LDES_plan a p-plan:Plan;
+  rdfs:comment "A data flow plan to publish an LDES from RINF source data".
+
+ex:streamVar0 a p-plan:Variable;
+  p-plan:isVariableOfPlan ex:RINF_LDES_plan.
+
+ex:streamVar1 a p-plan:Variable;
+  p-plan:isVariableOfPlan ex:RINF_LDES_plan.
+
+ex:step0 a p-plan:Step;
+  #p-plan:hasInputVar ex:someRMLMapping, ex:someOtherRMLMapping; # Here we should point to the actual mappings
+  p-plan:hasOutputVar ex:streamVar0;
+  rdfs:comment "Map source XML data from RINF to RDF";
+  p-plan:isStepOfPlan ex:RINF_LDES_plan.
+
+ex:step1 a p-plan:Step;
+  p-plan:isPrecededBy ex:step0;
+  p-plan:hasInputVar ex:streamVar0;
+  p-plan:hasOutputVar ex:streamVar1;
+  p-plan:isStepOfPlan ex:RINF_LDES_plan.
+
+ex:rmlStream a sds:Stream;
+  p-plan:correspondsToVariable ex:streamVar0;
+  p-plan:wasGeneratedBy [
+      a p-plan:Activity;
+      rdfs:comment "Convert an XML input in a stream of (versioned) RDF entities";
+      p-plan:correspondsToStep ex:step0;
+      prov:used [
+          a dcat:Dataset;
+          dcat:identifier <https://www.era.europa.eu/domains/registers/rinf_en>
+      ]
+  ].
+
+<https://era.ilabt.imec.be/ldes/metadata#generation-stream> a sds:Stream;
+  p-plan:correspondsToVariable ex:streamVar1;
+  p-plan:wasGeneratedBy [
+      a p-plan:Activity;
+      rdfs:comment "Wraps a stream of (versioned) RDF entities in a SDS stream";
+      p-plan:correspondsToStep ex:step1;
+      prov:used ex:rmlStream
+  ];
+  sds:carries [ a sds:Member ]; 
+  sds:dataset [
+      a dcat:Dataset;
+      dcat:title "RINF LDES";
+      dcat:publisher <https://julianrojas.org/#me>;
+      ldes:timestampPath dct:modified;
+      dcat:identifier <http://localhost:3000/rinf/ldes>
+  ].

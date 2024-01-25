@@ -1,0 +1,19 @@
+prefixes:
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era: "http://data.europa.eu/949/"
+
+sources:
+  op-source-rwl: ['dataset/data.xml~xpath',"/RINFData/OperationalPoint[UniqueOPID[not(matches(@Value,'^EU0'))]]/OPRailwayLocation"]
+
+mappings:
+  line-reference:
+    sources:
+      - op-source-rwl
+    s: http://data.europa.eu/949/functionalInfrastructure/lineReferences/$(@NationalIdentNum)_$(@Kilometer)
+    po:
+      - [a, era:LineReference]
+      - [rdfs:label, "$(@Kilometer) $(@NationalIdentNum)"]
+      - [era:lineNationalId, http://data.europa.eu/949/functionalInfrastructure/nationalLines/$(parent::*/MemberStateCode/@Code)/$(@NationalIdentNum)~iri]
+      - [era:kilometer, $(@Kilometer), xsd:double]
+    graph: ${NAMED_GRAPH}

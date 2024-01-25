@@ -1,0 +1,22 @@
+prefixes:
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era: "http://data.europa.eu/949/"
+  wgs: "http://www.w3.org/2003/01/geo/wgs84_pos#"
+  geosparql: "http://www.opengis.net/ont/geosparql#"
+
+sources:
+  op-source: ['dataset/data.xml~xpath',"/RINFData/OperationalPoint[UniqueOPID[not(matches(@Value,'^EU0'))]]"]
+
+mappings:
+  location:
+    sources:
+      - op-source
+    s: "http://data.europa.eu/949/locations/$(OPGeographicLocation/@Longitude)/$(OPGeographicLocation/@Latitude)"
+    po:
+      - [a, wgs:Point]
+      - [a, geosparql:Geometry]
+      - [wgs:lat, "$(OPGeographicLocation/@Latitude)", xsd:double]
+      - [wgs:long, "$(OPGeographicLocation/@Longitude)", xsd:double]
+      - [geosparql:asWKT, "POINT ($(OPGeographicLocation/@Longitude) $(OPGeographicLocation/@Latitude))", geosparql:wktLiteral]
+    graph: ${NAMED_GRAPH}
