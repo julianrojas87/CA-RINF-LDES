@@ -19,4 +19,3 @@ mappings:
       - [wgs:lat, "$(OPGeographicLocation/@Latitude)", xsd:double]
       - [wgs:long, "$(OPGeographicLocation/@Longitude)", xsd:double]
       - [geosparql:asWKT, "POINT ($(OPGeographicLocation/@Longitude) $(OPGeographicLocation/@Latitude))", geosparql:wktLiteral]
-    graph: ${NAMED_GRAPH}

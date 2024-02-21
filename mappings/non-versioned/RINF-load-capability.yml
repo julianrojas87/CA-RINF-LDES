@@ -20,4 +20,3 @@ mappings:
       - [a, era:LoadCapability]
       - [era:loadCapabilitySpeed,"$(substring-after(@Value,' '\))", xsd:integer]
       - [era:loadCapabilityLineCategory,"era-lc:$(substring-before(@Value,' '\))~iri"]
-    graph: ${NAMED_GRAPH}

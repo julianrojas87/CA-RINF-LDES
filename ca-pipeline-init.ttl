@@ -1,0 +1,433 @@
+@prefix js: <https://w3id.org/conn/js#>.
+@prefix : <https://w3id.org/conn#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix idlab-fn: <https://w3id.org/imec/idlab/function#>.
+@prefix as: <https://www.w3.org/ns/activitystreams#>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix formats: <http://www.w3.org/ns/formats/>.
+@prefix era: <http://data.europa.eu/949/>.
+
+<> owl:imports <./node_modules/@ajuvercr/js-runner/ontology.ttl>,
+   <./node_modules/@ajuvercr/js-runner/channels/file.ttl>,
+   <./node_modules/@ajuvercr/js-runner/channels/http.ttl>,
+   <./node_modules/file-utils-processors-ts/processors.ttl>,
+   <./node_modules/xml-utils-processors-ts/processors.ttl>,
+   <./node_modules/rml-mapper-processor-ts/processors.ttl>,
+   <./node_modules/sds-processors/configs/sdsify.ttl>,
+   <./node_modules/sds-processors/configs/stream_join.ttl>,
+   <./node_modules/@treecg/sds-storage-writer-mongo/processor.ttl>.
+
+#########################################
+# Channel definitions
+#########################################
+
+# HTTP channel for js:GlobRead → js:UnzipFile and for external update input 
+<rinf/http/reader> a :HttpReaderChannel;
+  :httpPort 3333;
+  :binary true.
+<rinf/http/writer> a :HttpWriterChannel;
+   :httpEndpoint "http://localhost:3333";
+   :httpMethod "POST".
+[ ] a :Channel;
+   :reader <rinf/http/reader>;
+   :writer <rinf/http/writer>.
+
+# Channel for js:GlobRead → js:Y2R
+<yarrrml/reader> a js:JsReaderChannel.
+<yarrrml/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <yarrrml/reader>;
+   :writer <yarrrml/writer>.
+
+# Channel for js:GlobRead → js:Y2R (versioned entities)
+<yarrrml/versioned/reader> a js:JsReaderChannel.
+<yarrrml/versioned/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <yarrrml/versioned/reader>;
+   :writer <yarrrml/versioned/writer>.
+
+# Channel for js:Y2R → js:StreamJoin
+<rml/reader> a js:JsReaderChannel.
+<rml/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <rml/reader>;
+   :writer <rml/writer>.
+
+# Channel for js:Y2R → js:IncRMLTransformer (versioned entities)
+<rml/versioned/reader> a js:JsReaderChannel.
+<rml/versioned/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <rml/versioned/reader>;
+   :writer <rml/versioned/writer>.
+
+# Channel for js:IncRMLTransformer → js:StreamJoin (versioned entities)
+<incrml/reader> a js:JsReaderChannel.
+<incrml/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <incrml/reader>;
+   :writer <incrml/writer>.
+
+# Channel for js:StreamJoin → js:RMLMapperReader
+<rml/joined/reader> a js:JsReaderChannel.
+<rml/joined/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <rml/joined/reader>;
+   :writer <rml/joined/writer>.
+
+# Channel for js:ReadFile → js:XQueryProcessor and js:RMLMapperReader
+<rinfxml/reader> a js:JsReaderChannel.
+<rinfxml/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <rinfxml/reader>;
+   :writer <rinfxml/writer>.
+
+# Channel 1 for js:XQueryProcessor → js:RMLMapperReader
+<internal-node-link-in-out/reader> a js:JsReaderChannel.
+<internal-node-link-in-out/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <internal-node-link-in-out/reader>;
+   :writer <internal-node-link-in-out/writer>.
+
+# Channel 2 for js:XQueryProcessor → js:RMLMapperReader
+<internal-node-link-no-in/reader> a js:JsReaderChannel.
+<internal-node-link-no-in/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <internal-node-link-no-in/reader>;
+   :writer <internal-node-link-no-in/writer>.
+
+# Channel 3 for js:XQueryProcessor → js:RMLMapperReader
+<internal-node-link-no-out/reader> a js:JsReaderChannel.
+<internal-node-link-no-out/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <internal-node-link-no-out/reader>;
+   :writer <internal-node-link-no-out/writer>.
+
+# Channel for js:RMLMapperReader → js:Sdsify
+<ldes-raw/reader> a js:JsReaderChannel.
+<ldes-raw/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <ldes-raw/reader>;
+   :writer <ldes-raw/writer>.
+
+# Channel for js:Sdsify → js:Ingest
+<sds/reader> a js:JsReaderChannel.
+<sds/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <sds/reader>;
+   :writer <sds/writer>.
+
+# File reader channel for input on js:RMLMapperReader
+<countriesSource> a :FileReaderChannel;
+   :fileOnReplace true;
+   :fileReadFirstContent true;
+   :filePath <./rawdata/countries.csv>.
+
+# File reader channel for input on js:RMLMapperReader
+<predicateIndexSource> a :FileReaderChannel;
+   :fileOnReplace true;
+   :fileReadFirstContent true;
+   :filePath <./rawdata/index_predicate_mappings.csv>.
+
+# File reader channel for metadata input on js:Ingest
+<sdsMetadataSource> a :FileReaderChannel;
+   :fileOnReplace true;
+   :fileReadFirstContent true;
+   :filePath <./config/sds-metadata.ttl>.
+
+#########################################
+# Processor definitions
+#########################################
+# Processor to read and stream out the set of initial RINF data sources
+[ ] a js:GlobRead;
+   js:glob <./rawdata/RINF_init/*.zip>;
+   js:output <rinf/http/writer>;
+   js:closeOnEnd false;
+   js:binary true.
+
+# Processor to unzip RINF XML source file
+[ ] a js:UnzipFile;
+   js:input <rinf/http/reader>;
+   js:output <rinfxml/writer>.
+
+# Processor to read and stream out a set of YARRRML mapping files
+[ ] a js:GlobRead;
+   js:glob <./mappings/non-versioned/*.yml>;
+   js:output <yarrrml/writer>.
+
+# Processor to read and stream out a set of YARRRML mapping files (versioned entities)
+[ ] a js:GlobRead;
+   js:glob <./mappings/versioned/*.yml>;
+   js:output <yarrrml/versioned/writer>.
+
+# Processor to convert YARRRML to RML mappings
+[ ] a js:Y2R;
+   js:input <yarrrml/reader>;
+   js:output <rml/writer>.
+
+# Processor to convert YARRRML to RML mappings (versioned entities)
+[ ] a js:Y2R;
+   js:input <yarrrml/versioned/reader>;
+   js:output <rml/versioned/writer>.
+
+# Processor to expand RML mappings to IncRML mappings
+[ ] a js:IncRMLTransformer;
+   js:rmlStream <rml/versioned/reader>;
+   js:config [
+      js:stateBasePath <./state>;
+      js:lifeCycleConfig [
+         js:predicate era:lifecycleType;
+         js:create [
+            js:function idlab-fn:explicitCreate;
+            js:type as:Create;
+         ];
+         js:update [
+            js:function idlab-fn:implicitUpdate;
+            js:type as:Update;
+         ];
+         js:delete [
+            js:function idlab-fn:implicitDelete;
+            js:type as:Delete;
+         ];
+      ];
+      js:targetConfig [
+         js:targetPath <./output.nt>;
+         js:timestampPath dct:modified;
+         js:versionOfPath dct:isVersionOf;
+         js:serialization formats:N-Triples;
+         js:uniqueIRIs true
+      ];
+   ];
+   js:incrmlStream <incrml/writer>;
+   js:bulkMode true.
+
+# Processor to join the versioned and non-versioned mapping streams
+[ ] a js:StreamJoin;
+   js:input <incrml/reader>;
+   js:input <rml/reader>;
+   js:output <rml/joined/writer>.
+
+# Processor to execute XQueries over XML documents
+[ ] a js:XQueryProcessor;
+   js:xmlInput <rinfxml/reader>;
+   js:xquery [
+      js:name "internal-node-link-in-out";
+      js:query """
+        <RINFData>{
+          for $op in //OperationalPoint/UniqueOPID
+          return (
+            let $sol1 := //SOLTrack/../SOLOPEnd[@Value=$op/@Value and //SectionOfLine/SOLOPStart[@Value=$op/@Value]]/../SOLTrack
+            let $sol2 := //SOLTrack/../SOLOPStart[@Value=$op/@Value and //SectionOfLine/SOLOPEnd[@Value=$op/@Value]]/../SOLTrack
+            for $tr1 in $sol1
+            return (
+              for $tr2 in $sol2
+              return
+                <netElement>
+                  <INCOMING_LINE>{$tr1/../SOLLineIdentification/@Value}</INCOMING_LINE>
+                  <INCOMING_REMOTE_OP>{$tr1/../SOLOPStart/@Value}</INCOMING_REMOTE_OP>
+                  <INCOMING>{$tr1/SOLTrackIdentification/@Value}</INCOMING>
+                  <INCOMING_DIRECTION>{$tr1/SOLTrackDirection/@Value}</INCOMING_DIRECTION>
+                  <UOPID>{$op}</UOPID>
+                  <OUTGOING>{$tr2/SOLTrackIdentification/@Value}</OUTGOING>
+                  <OUTGOING_DIRECTION>{$tr2/SOLTrackDirection/@Value}</OUTGOING_DIRECTION>
+                  <OUTGOING_REMOTE_OP>{$tr2/../SOLOPEnd/@Value}</OUTGOING_REMOTE_OP>
+                  <OUTGOING_LINE>{$tr2/../SOLLineIdentification/@Value}</OUTGOING_LINE>
+                  <value> { concat (
+                    $tr1/../SOLLineIdentification/@Value,'_',
+                    $tr1/../SOLOPStart/@Value,'_',
+                    $tr1/SOLTrackIdentification/@Value,'_',
+                    $op/@Value,'_',
+                    $tr2/SOLTrackIdentification/@Value,'_',
+                    $tr2/../SOLOPEnd/@Value,'_',
+                    $tr2/../SOLLineIdentification/@Value
+                  )}</value>
+                </netElement>
+            )
+          )
+        }</RINFData>
+      """;
+      js:outputStream <internal-node-link-in-out/writer>;
+   ], [
+      js:name "internal-node-link-no-in";
+      js:query """
+        <RINFData>{
+          for $op in //OperationalPoint/UniqueOPID
+          return(
+            for $tr1 in //SOLTrack/../SOLOPStart[@Value=$op/@Value]/../SOLTrack
+            return(
+              for $tr2 in reverse(//SOLTrack/../SOLOPStart[@Value=$op/@Value]/../SOLTrack )
+              where($tr1/SOLTrackIdentification/@Value != $tr2/SOLTrackIdentification/@Value or ($tr1/../SOLOPEnd/@Value != $tr2/../SOLOPEnd/@Value))
+              return
+                <netElement>
+                  <INCOMING_LINE>{$tr1/../SOLLineIdentification/@Value}</INCOMING_LINE>
+                  <INCOMING_REMOTE_OP>{$tr1/../SOLOPEnd/@Value}</INCOMING_REMOTE_OP>
+                  <INCOMING>{$tr1/SOLTrackIdentification/@Value}</INCOMING>
+                  <INCOMING_DIRECTION>{$tr1/SOLTrackDirection/@Value}</INCOMING_DIRECTION>
+                  <UOPID>{$op}</UOPID>
+                  <OUTGOING>{$tr2/SOLTrackIdentification/@Value}</OUTGOING>
+                  <OUTGOING_DIRECTION>{$tr2/SOLTrackDirection/@Value}</OUTGOING_DIRECTION>
+                  <OUTGOING_REMOTE_OP>{$tr2/../SOLOPEnd/@Value}</OUTGOING_REMOTE_OP>
+                  <OUTGOING_LINE>{$tr2/../SOLLineIdentification/@Value}</OUTGOING_LINE>
+                  <value> {(concat(
+                    $tr1/../SOLLineIdentification/@Value,'_',
+                    $tr1/../SOLOPEnd/@Value,'_',
+                    $tr1/SOLTrackIdentification/@Value,'_',
+                    $op/@Value,'_',
+                    $tr2/SOLTrackIdentification/@Value,'_',
+                    $tr2/../SOLOPEnd/@Value,'_',
+                    $tr2/../SOLLineIdentification/@Value
+                  ))}</value>
+                </netElement>
+            )
+          )
+        }</RINFData>
+      """;
+      js:outputStream <internal-node-link-no-in/writer>;
+   ], [
+      js:name "internal-node-link-no-out";
+      js:query """
+        <RINFData>{
+          for $op in //OperationalPoint/UniqueOPID
+          return (
+            for $tr1 in //SOLTrack/../SOLOPEnd[@Value=$op/@Value ]/../SOLTrack
+            return (
+              for $tr2 in reverse(//SOLTrack/../SOLOPEnd[@Value=$op/@Value]/../SOLTrack)
+              where($tr1/SOLTrackIdentification/@Value != $tr2/SOLTrackIdentification/@Value or ($tr1/../SOLOPStart/@Value!=$tr2/../SOLOPStart/@Value))
+              return
+                <netElement>
+                  <INCOMING_LINE>{$tr1/../SOLLineIdentification/@Value}</INCOMING_LINE>
+                  <INCOMING_REMOTE_OP>{$tr1/../SOLOPStart/@Value}</INCOMING_REMOTE_OP>
+                  <INCOMING>{$tr1/SOLTrackIdentification/@Value}</INCOMING>
+                  <INCOMING_DIRECTION>{$tr1/SOLTrackDirection/@Value}</INCOMING_DIRECTION>
+                  <UOPID>{$op}</UOPID>
+                  <OUTGOING>{$tr2/SOLTrackIdentification/@Value}</OUTGOING>
+                  <OUTGOING_DIRECTION>{$tr2/SOLTrackDirection/@Value}</OUTGOING_DIRECTION>
+                  <OUTGOING_REMOTE_OP>{$tr2/../SOLOPStart/@Value}</OUTGOING_REMOTE_OP>
+                  <OUTGOING_LINE>{$tr2/../SOLLineIdentification/@Value}</OUTGOING_LINE>
+                  <value>{(
+                    concat(
+                      $tr1/../SOLLineIdentification/@Value,'_',
+                      $tr1/../SOLOPStart/@Value,'_',
+                      $tr1/SOLTrackIdentification/@Value,'_',
+                      $op/@Value,'_',
+                      $tr2/SOLTrackIdentification/@Value,'_',
+                      $tr2/../SOLOPStart/@Value,'_',
+                      $tr2/../SOLLineIdentification/@Value
+                    )
+                  )}</value>
+                </netElement>
+            )
+          )
+        }</RINFData>
+      """;
+      js:outputStream <internal-node-link-no-out/writer>;
+   ].
+
+# Processor to execute RML mappings
+[ ] a js:RMLMapperReader;
+   js:output <ldes-raw/writer>;
+   js:rmlSource [
+      js:sourceLocation "data/countries.csv";
+      js:input <countriesSource>;
+   ], [
+      js:sourceLocation "data/index_predicate_mappings.csv";
+      js:input <predicateIndexSource>;
+   ], [
+      js:sourceLocation "dataset/internal-node-link-in-out.xml";
+      js:input <internal-node-link-in-out/reader>;
+      js:trigger true;
+   ], [
+      js:sourceLocation "dataset/internal-node-link-no-in.xml";
+      js:input <internal-node-link-no-in/reader>;
+      js:trigger true;
+   ], [
+      js:sourceLocation "dataset/internal-node-link-no-out.xml";
+      js:input <internal-node-link-no-out/reader>;
+      js:trigger true;
+   ], [
+      js:sourceLocation "dataset/data.xml";
+      js:input <rinfxml/reader>;
+      js:trigger true;
+      js:incRMLStateIndex "IMCode Value=\\\"([^\\\"]+)\\\""
+   ];
+   js:rmlTarget [
+      js:targetLocation <./output.nt>;
+      js:output <ldes-raw/writer>
+   ];
+   js:mappings <rml/joined/reader>;
+   js:rmlJar <https://github.com/RMLio/rmlmapper-java/releases/download/v6.5.1/rmlmapper-6.5.1-r371-all.jar>.
+
+# Processor to describe every entity as part of a SDS stream for further processing
+[ ] a js:Sdsify;
+   js:input <ldes-raw/reader>;
+   js:output <sds/writer>;
+   js:stream <https://era.ilabt.imec.be/ldes/metadata#generation-stream>;
+   js:timestampPath dct:modified;
+   js:shapeFilter """
+      @prefix sh: <http://www.w3.org/ns/shacl#>.
+      @prefix era: <http://data.europa.eu/949/>.
+      @prefix gsp: <http://www.opengis.net/ont/geosparql#>.
+
+      [ ] a sh:NodeShape;
+         sh:targetClass era:SectionOfLine;
+         sh:property [
+            sh:path era:lineNationalId;
+            sh:node [
+               a sh:NodeShape;
+               sh:targetClass era:NationalRailwayLine
+            ]
+         ].
+   """, """
+      @prefix sh: <http://www.w3.org/ns/shacl#>.
+      @prefix era: <http://data.europa.eu/949/>.
+      @prefix gsp: <http://www.opengis.net/ont/geosparql#>.
+
+      [ ] a sh:NodeShape;
+         sh:targetClass era:OperationalPoint;
+         sh:property [
+            sh:path gsp:hasGeometry;
+            sh:node [
+               a sh:NodeShape;
+               sh:targetClass gsp:Geometry
+            ]
+         ], [
+            sh:path era:lineReference;
+            sh:node [
+               a sh:NodeShape;
+               sh:targetClass era:LineReference
+            ]
+         ].
+   """, """
+      @prefix sh: <http://www.w3.org/ns/shacl#>.
+      @prefix era: <http://data.europa.eu/949/>.
+
+      [ ] a sh:NodeShape;
+         sh:targetClass era:Track;
+         sh:property [
+            sh:path era:trackLoadCapability;
+            sh:node [
+               a sh:NodeShape;
+               sh:targetClass era:LoadCapability
+            ]
+         ].
+   """, """
+      @prefix sh: <http://www.w3.org/ns/shacl#>.
+      @prefix era: <http://data.europa.eu/949/>.
+
+      [ ] a sh:NodeShape;
+         sh:targetClass era:ContactLineSystem.
+   """.
+
+# Processor to persist the SDS stream into a MongoDB instance
+[ ] a js:Ingest;
+  js:dataInput <sds/reader>;
+  js:metadataInput <sdsMetadataSource>;
+  js:database [
+    js:url <mongodb://192.168.1.56:27017/rinf-ldes>;
+    js:metadata "METADATA";
+    js:data "DATA";
+    js:index "INDEX";
+  ];
+  js:pageSize 1000;
+  js:branchSize 4;
+  js:minBucketSpan 3600.
+

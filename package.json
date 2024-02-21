@@ -10,11 +10,11 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@ajuvercr/js-runner": "^0.1.12",
+    "@ajuvercr/js-runner": "github:julianrojas87/js-runner#runnable",
     "@treecg/sds-storage-writer-mongo": "^0.2.6",
-    "file-utils-processors-ts": "^0.4.0",
-    "rml-mapper-processor-ts": "^0.5.8",
+    "file-utils-processors-ts": "^0.5.2",
+    "rml-mapper-processor-ts": "^0.6.3",
     "sds-processors": "^0.3.1",
-    "xml-utils-processors-ts": "^0.1.1"
+    "xml-utils-processors-ts": "^0.2.1"
   }
 }

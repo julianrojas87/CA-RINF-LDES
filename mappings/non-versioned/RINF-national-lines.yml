@@ -26,7 +26,6 @@ mappings:
                 - [str1, "$(parent::*/MemberStateCode/@Code)"]
                 - [str2, $(code)]
 #      - [era:lineCategory, "era-linecat:$(SOLTrack/SOLTrackParameter[@ID='IPP_LineCat' and @IsApplicable='Y']/@Value)~iri"] #  line-categories: # 1.1.1.1.2.2
-    graph: ${NAMED_GRAPH}
     
   eu-country:
     sources:

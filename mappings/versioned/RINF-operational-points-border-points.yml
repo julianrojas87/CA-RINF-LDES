@@ -24,7 +24,7 @@ mappings:
       - [era:uopid, $(UniqueOPID/@Value)] # 1.2.0.0.0.2
       - [era:opType,"era-op-types:$(OPType/@Value)~iri" ] # 1.2.0.0.0.4
       - [era:opInfoPerCountry,"http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(parent::*/MemberStateCode/@Code)/$(UniqueOPID/@Value)/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])~iri"]
-    graph: ${NAMED_GRAPH}
+
 
   country-specific-operational-border-point:
     sources:
@@ -53,7 +53,7 @@ mappings:
               parameters:
                 - [str1, $(parent::*/MemberStateCode/@Code)]
                 - [str2, $(code)]
-    graph: ${NAMED_GRAPH}
+
 
   eu-country:
     sources:
@@ -68,7 +68,7 @@ mappings:
     s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(parent::*/MemberStateCode/@Code)/$(UniqueOPID/@Value)/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])
     po:
       - [era:opTypeGaugeChangeover, "$(OPTypeGaugeChangeover[@IsApplicable='Y']/@Value)"]
-    graph: ${NAMED_GRAPH}
+
 
   # ---------------- Rules and restrictions --------------
 
@@ -95,7 +95,7 @@ mappings:
           parameters:
             - [grel:valueParameter, "$(OPRules/OPRulesParameter[@ID='RUL_LocalRulesOrRestrictions' and @IsApplicable='Y']/@Value)"]
             - [grel:valueParameter2, "N"]
-    graph: ${NAMED_GRAPH}
+
 
   local-rules-doc: # 1.2.3.2
     sources:
@@ -103,4 +103,3 @@ mappings:
     s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(parent::*/MemberStateCode/@Code)/$(UniqueOPID/@Value)/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])
     po:
       - [era:localRulesOrRestrictionsDoc, "$(OPRules/OPRulesParameter[@ID='RUL_LocalRulesOrRestrictionsDocRef' and @IsApplicable='Y']/@Value)"]
-    graph: ${NAMED_GRAPH}

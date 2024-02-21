@@ -21,9 +21,16 @@
 # Channel definitions
 #########################################
 
-# HTTP channel for input on js:ReadFile
-<rinfSource> a :HttpReaderChannel;
-  :httpPort 3333.
+# HTTP channel for js:GlobRead → js:UnzipFile and for external update input 
+<rinf/http/reader> a :HttpReaderChannel;
+  :httpPort 3333;
+  :binary true.
+<rinf/http/writer> a :HttpWriterChannel;
+   :httpEndpoint "http://localhost:3333";
+   :httpMethod "POST".
+[ ] a :Channel;
+   :reader <rinf/http/reader>;
+   :writer <rinf/http/writer>.
 
 # Channel for js:GlobRead → js:Y2R
 <yarrrml/reader> a js:JsReaderChannel.
@@ -39,33 +46,19 @@
    :reader <yarrrml/versioned/reader>;
    :writer <yarrrml/versioned/writer>.
 
-# Channel for js:Y2R → js:Substitute
+# Channel for js:Y2R → js:StreamJoin
 <rml/reader> a js:JsReaderChannel.
 <rml/writer> a js:JsWriterChannel.
 [ ] a js:JsChannel;
    :reader <rml/reader>;
    :writer <rml/writer>.
 
-# Channel for js:Y2R → js:Substitute (versioned entities)
+# Channel for js:Y2R → js:IncRMLTransformer (versioned entities)
 <rml/versioned/reader> a js:JsReaderChannel.
 <rml/versioned/writer> a js:JsWriterChannel.
 [ ] a js:JsChannel;
    :reader <rml/versioned/reader>;
    :writer <rml/versioned/writer>.
-
-# Channel for js:Substitute → js:StreamJoin
-<rml2/reader> a js:JsReaderChannel.
-<rml2/writer> a js:JsWriterChannel.
-[ ] a js:JsChannel;
-   :reader <rml2/reader>;
-   :writer <rml2/writer>.
-
-# Channel for js:Substitute → js:IncRMLTransformer (versioned entities)
-<rml2/versioned/reader> a js:JsReaderChannel.
-<rml2/versioned/writer> a js:JsWriterChannel.
-[ ] a js:JsChannel;
-   :reader <rml2/versioned/reader>;
-   :writer <rml2/versioned/writer>.
 
 # Channel for js:IncRMLTransformer → js:StreamJoin (versioned entities)
 <incrml/reader> a js:JsReaderChannel.
@@ -144,10 +137,10 @@
 #########################################
 # Processor definitions
 #########################################
-# Processor to read an input data file from disk
-[ ] a js:ReadFile;
-   js:input <rinfSource>;
-   js:folderPath <./rawdata>;
+
+# Processor to unzip RINF XML source file
+[ ] a js:UnzipFile;
+   js:input <rinf/http/reader>;
    js:output <rinfxml/writer>.
 
 # Processor to read and stream out a set of YARRRML mapping files
@@ -170,23 +163,9 @@
    js:input <yarrrml/versioned/reader>;
    js:output <rml/versioned/writer>.
 
-# Processor to replace text content
-[ ] a js:Substitute;
-   js:input <rml/reader>;
-   js:output <rml2/writer>;
-   js:source "${NAMED_GRAPH}";
-   js:replace "http://data.europa.eu/949/graph/rinf".
-
-# Processor to replace text content (versioned entities)
-[ ] a js:Substitute;
-   js:input <rml/versioned/reader>;
-   js:output <rml2/versioned/writer>;
-   js:source "${NAMED_GRAPH}";
-   js:replace "http://data.europa.eu/949/graph/rinf".
-
 # Processor to expand RML mappings to IncRML mappings
 [ ] a js:IncRMLTransformer;
-   js:rmlStream <rml2/versioned/reader>;
+   js:rmlStream <rml/versioned/reader>;
    js:config [
       js:stateBasePath <./state>;
       js:lifeCycleConfig [
@@ -218,7 +197,7 @@
 # Processor to join the versioned and non-versioned mapping streams
 [ ] a js:StreamJoin;
    js:input <incrml/reader>;
-   js:input <rml2/reader>;
+   js:input <rml/reader>;
    js:output <rml/joined/writer>.
 
 # Processor to execute XQueries over XML documents
@@ -362,6 +341,7 @@
       js:sourceLocation "dataset/data.xml";
       js:input <rinfxml/reader>;
       js:trigger true;
+      js:incRMLStateIndex "IMCode Value=\\\"([^\\\"]+)\\\""
    ];
    js:rmlTarget [
       js:targetLocation <./output.nt>;
@@ -436,7 +416,8 @@
   js:dataInput <sds/reader>;
   js:metadataInput <sdsMetadataSource>;
   js:database [
-    js:url <mongodb://192.168.108.93:27017/rinf-ldes>;
+    #js:url <mongodb://localhost:27017/rinf-ldes>;
+    js:url <mongodb://192.168.1.56:27017/rinf-ldes>;
     js:metadata "METADATA";
     js:data "DATA";
     js:index "INDEX";
