@@ -26,6 +26,7 @@ mappings:
       - [era:trackId, $(OPTrackIdentification/@Value)]
       - [era:validityStartDate , "$((@ValidityDateStart,'1970-01-01'\)[1])", xsd:date]
       - [era:validityEndDate, "$((@ValidityDateEnd,'3100-12-31'\)[1])", xsd:date]
+      - [era:platform, "http://data.europa.eu/949/functionalInfrastructure/platforms/$(parent::*/UniqueOPID/@Value)_$(replace(OPTrackPlatform/OPTrackPlatformIdentification/@Value,'[^A-Za-z_0-9]',''\))~iri"]
 
 
   # ------------ Declarations of verification for track --------------

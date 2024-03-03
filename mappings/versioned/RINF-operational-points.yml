@@ -30,6 +30,7 @@ mappings:
       - [wgs:location, "http://data.europa.eu/949/locations/$(OPGeographicLocation/@Longitude)/$(OPGeographicLocation/@Latitude)~iri"] # 1.2.0.0.0.5 OSRM uses this prop
       - [era:lineReference, http://data.europa.eu/949/functionalInfrastructure/lineReferences/$(OPRailwayLocation/(@NationalIdentNum || '_' || @Kilometer\))~iri] # 1.2.0.0.0.6
       - [era:track, http://data.europa.eu/949/functionalInfrastructure/tracks/$(UniqueOPID/@Value)_$(OPTrack/OPTrackIdentification/@Value)~iri]
+      - [era:siding, "http://data.europa.eu/949/functionalInfrastructure/sidings/$(UniqueOPID/@Value)_$(replace(OPSiding/OPSidingIdentification/@Value,'[^A-Za-z_0-9]',''\))~iri"]
       - [era:hasAbstraction, http://data.europa.eu/949/topology/netElements/$(UniqueOPID/@Value)~iri]
       - [era:validityStartDate, "$((@ValidityDateStart,'1970-01-01'\)[1])", xsd:date]
       - [era:validityEndDate, "$((@ValidityDateEnd,'3100-12-31'\)[1])", xsd:date]

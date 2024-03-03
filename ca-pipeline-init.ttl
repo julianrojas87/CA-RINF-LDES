@@ -365,17 +365,15 @@
    js:shapeFilter """
       @prefix sh: <http://www.w3.org/ns/shacl#>.
       @prefix era: <http://data.europa.eu/949/>.
-      @prefix gsp: <http://www.opengis.net/ont/geosparql#>.
 
       [ ] a sh:NodeShape;
-         sh:targetClass era:SectionOfLine;
-         sh:property [
-            sh:path era:lineNationalId;
-            sh:node [
-               a sh:NodeShape;
-               sh:targetClass era:NationalRailwayLine
-            ]
-         ].
+         sh:targetClass era:NationalRailwayLine.
+   """, """
+      @prefix sh: <http://www.w3.org/ns/shacl#>.
+      @prefix era: <http://data.europa.eu/949/>.
+
+      [ ] a sh:NodeShape;
+         sh:targetClass era:SectionOfLine.
    """, """
       @prefix sh: <http://www.w3.org/ns/shacl#>.
       @prefix era: <http://data.europa.eu/949/>.
@@ -401,20 +399,43 @@
       @prefix era: <http://data.europa.eu/949/>.
 
       [ ] a sh:NodeShape;
-         sh:targetClass era:Track;
-         sh:property [
-            sh:path era:trackLoadCapability;
-            sh:node [
-               a sh:NodeShape;
-               sh:targetClass era:LoadCapability
-            ]
-         ].
+         sh:targetClass era:NetElement.
+   """, """
+      @prefix sh: <http://www.w3.org/ns/shacl#>.
+      @prefix era: <http://data.europa.eu/949/>.
+
+      [ ] a sh:NodeShape;
+         sh:targetClass era:NetRelation.
+   """, """
+      @prefix sh: <http://www.w3.org/ns/shacl#>.
+      @prefix era: <http://data.europa.eu/949/>.
+
+      [ ] a sh:NodeShape;
+         sh:targetClass era:Track.
+   """, """
+      @prefix sh: <http://www.w3.org/ns/shacl#>.
+      @prefix era: <http://data.europa.eu/949/>.
+
+      [ ] a sh:NodeShape;
+         sh:targetClass era:LoadCapability.
    """, """
       @prefix sh: <http://www.w3.org/ns/shacl#>.
       @prefix era: <http://data.europa.eu/949/>.
 
       [ ] a sh:NodeShape;
          sh:targetClass era:ContactLineSystem.
+   """, """
+      @prefix sh: <http://www.w3.org/ns/shacl#>.
+      @prefix era: <http://data.europa.eu/949/>.
+
+      [ ] a sh:NodeShape;
+         sh:targetClass era:ETCSLevel.
+   """, """
+      @prefix sh: <http://www.w3.org/ns/shacl#>.
+      @prefix era: <http://data.europa.eu/949/>.
+
+      [ ] a sh:NodeShape;
+         sh:targetClass era:TrainDetectionSystem.
    """.
 
 # Processor to persist the SDS stream into a MongoDB instance
