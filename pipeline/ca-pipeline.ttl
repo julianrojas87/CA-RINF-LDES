@@ -437,13 +437,12 @@
   js:dataInput <sds/reader>;
   js:metadataInput <sdsMetadataSource>;
   js:database [
-    js:url <mongodb://localhost:27017/rinf-ldes>;
-    #js:url <mongodb://192.168.1.56:27017/rinf-ldes>;
+    js:url <mongodb://mongodb:27017/rinf-ldes>;
     js:metadata "METADATA";
     js:data "DATA";
     js:index "INDEX";
   ];
   js:pageSize 1000;
   js:branchSize 4;
-  js:minBucketSpan 3600.
+  js:minBucketSpan 60.
 
