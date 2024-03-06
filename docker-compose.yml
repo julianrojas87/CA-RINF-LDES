@@ -1,0 +1,37 @@
+version: '3.3'
+services:
+    mongodb:
+        container_name: mongodb
+        image: mongo:latest
+        #image: mongo:4.4.29 # This is due to limitations in the Virtual Wall's hardware
+        volumes:
+          - /users/jrojasme/mongo-data:/data/db
+        ports:
+          - 27017:27017
+        restart: always
+        networks:
+          - ldes
+    pipeline:
+        build: ./pipeline
+        ports:
+          - 3333:3333
+        volumes:
+          - /users/jrojasme/rml-state:/opt/pipeline/state
+        command: ca-pipeline.ttl
+        networks:
+          - ldes
+        depends_on:
+          - mongodb
+    ldes-server:
+        build: ./ldes-server
+        ports:
+          - 3000:3000
+        command: -b http://localhost:3000
+        networks:
+          - ldes
+        depends_on:
+          - mongodb
+
+networks:
+    ldes:
+      name: ldes-network

@@ -15,10 +15,9 @@ mappings:
   sections-of-line:
     sources:
       - seol-source
-    s: http://data.europa.eu/949/functionalInfrastructure/sectionsOfLine/$(SOLLineIdentification/@Value)_$(SOLOPStart/@Value)_$(SOLOPEnd/@Value)/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])
+    s: http://data.europa.eu/949/functionalInfrastructure/sectionsOfLine/$(SOLLineIdentification/@Value)_$(SOLOPStart/@Value)_$(SOLOPEnd/@Value)
     po:
       - [a, era:SectionOfLine]
-      - [era:canonicalURI,"http://data.europa.eu/949/functionalInfrastructure/sectionsOfLine/$(SOLLineIdentification/@Value)_$(SOLOPStart/@Value)_$(SOLOPEnd/@Value)~iri"]
       - [rdfs:label, "$((let $ref := SOLOPStart/@Value return (ancestor::RINFData/OperationalPoint[UniqueOPID/@Value = $ref]/OPName/@Value\\)\\) || '-' || (let $ref := SOLOPEnd/@Value return (ancestor::RINFData/OperationalPoint[UniqueOPID/@Value = $ref]/OPName/@Value\\)\\))"]
       - [era:imCode, $(SOLIMCode/@Value)] # 1.1.0.0.0.1
       - [era:lineNationalId, http://data.europa.eu/949/functionalInfrastructure/nationalLines/$(parent::*/MemberStateCode/@Code)/$(SOLLineIdentification/@Value)~iri] # 1.1.0.0.0.2
@@ -37,14 +36,14 @@ mappings:
               parameters:
                 - [str1, $(SOLOPStart/@Value)]
                 - [str2, $(UniqueOPID/@Value)]
-      - p: era:opStart # 1.1.0.0.0.3 (for border points)
-        o:
-          - mapping: link-sol-to-border-operational-point
-            condition:
-              function: equal
-              parameters:
-                - [str1, $(SOLOPStart/@Value)]
-                - [str2, $(UniqueOPID/@Value)]
+      # - p: era:opStart # 1.1.0.0.0.3 (for border points)
+      #   o:
+      #     - mapping: link-sol-to-border-operational-point
+      #       condition:
+      #         function: equal
+      #         parameters:
+      #           - [str1, $(SOLOPStart/@Value)]
+      #           - [str2, $(UniqueOPID/@Value)]
       - p: era:opEnd # 1.1.0.0.0.4
         o:
           - mapping: link-sol-to-operational-point
@@ -53,14 +52,14 @@ mappings:
               parameters:
                 - [str1, $(SOLOPEnd/@Value)]
                 - [str2, $(UniqueOPID/@Value)]
-      - p: era:opEnd # 1.1.0.0.0.4 (for border points)
-        o:
-          - mapping: link-sol-to-border-operational-point
-            condition:
-              function: equal
-              parameters:
-                - [str1, $(SOLOPEnd/@Value)]
-                - [str2, $(UniqueOPID/@Value)]
+      # - p: era:opEnd # 1.1.0.0.0.4 (for border points)
+      #   o:
+      #     - mapping: link-sol-to-border-operational-point
+      #       condition:
+      #         function: equal
+      #         parameters:
+      #           - [str1, $(SOLOPEnd/@Value)]
+      #           - [str2, $(UniqueOPID/@Value)]
       - p: era:inCountry
         o:
           - mapping: eu-country
@@ -74,13 +73,13 @@ mappings:
   link-sol-to-operational-point:
     sources:
       - op-source
-    s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])
+    s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)
 
 
-  link-sol-to-border-operational-point:
-    sources:
-      - border-op-source
-    s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(parent::*/MemberStateCode/@Code)/$(UniqueOPID/@Value)/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])
+  # link-sol-to-border-operational-point:
+  #   sources:
+  #     - border-op-source
+  #   s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(parent::*/MemberStateCode/@Code)/$(UniqueOPID/@Value)/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])
 
 
   eu-country:
@@ -92,7 +91,7 @@ mappings:
   sections-of-line-geometry: # UC-031 added WKT geometries
     sources:
       - seol-source
-    s: http://data.europa.eu/949/functionalInfrastructure/sectionsOfLine/$(SOLLineIdentification/@Value)_$(SOLOPStart/@Value)_$(SOLOPEnd/@Value)/geometry
+    s: http://data.europa.eu/949/functionalInfrastructure/sectionsOfLine/$(SOLLineIdentification/@Value)_$(SOLOPStart/@Value)_$(SOLOPEnd/@Value)
     po:
       - [a, geosparql:Geometry]
       - [geosparql:asWKT, $(@Shape), geosparql:wktLiteral]

@@ -17,10 +17,9 @@ mappings:
   operational-point:
     sources:
       - op-source
-    s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])
+    s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)
     po:
       - [a, era:OperationalPoint]
-      - [era:canonicalURI,"http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)~iri"]
       - [rdfs:label, $(OPName/@Value)]
       - [era:opName, $(OPName/@Value)] # 1.2.0.0.0.1
       - [era:uopid, $(UniqueOPID/@Value)] # 1.2.0.0.0.2
@@ -30,7 +29,7 @@ mappings:
       - [wgs:location, "http://data.europa.eu/949/locations/$(OPGeographicLocation/@Longitude)/$(OPGeographicLocation/@Latitude)~iri"] # 1.2.0.0.0.5 OSRM uses this prop
       - [era:lineReference, http://data.europa.eu/949/functionalInfrastructure/lineReferences/$(OPRailwayLocation/(@NationalIdentNum || '_' || @Kilometer\))~iri] # 1.2.0.0.0.6
       - [era:track, http://data.europa.eu/949/functionalInfrastructure/tracks/$(UniqueOPID/@Value)_$(OPTrack/OPTrackIdentification/@Value)~iri]
-      - [era:siding, "http://data.europa.eu/949/functionalInfrastructure/sidings/$(UniqueOPID/@Value)_$(replace(OPSiding/OPSidingIdentification/@Value,'[^A-Za-z_0-9]',''\))~iri"]
+      - [era:siding, "http://data.europa.eu/949/functionalInfrastructure/sidings/$(OPSiding/(parent::OperationalPoint/UniqueOPID/@Value || _ || replace(OPSidingIdentification/@Value, '[^A-Za-z_0-9]', ''\)\))~iri"]
       - [era:hasAbstraction, http://data.europa.eu/949/topology/netElements/$(UniqueOPID/@Value)~iri]
       - [era:validityStartDate, "$((@ValidityDateStart,'1970-01-01'\)[1])", xsd:date]
       - [era:validityEndDate, "$((@ValidityDateEnd,'3100-12-31'\)[1])", xsd:date]
@@ -54,7 +53,7 @@ mappings:
   gauge-changeover: # 1.2.0.0.0.4.1
     sources:
       - op-source
-    s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])
+    s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)
     po:
       - [era:opTypeGaugeChangeover, "$(OPTypeGaugeChangeover[@IsApplicable='Y']/@Value)"]
 
@@ -64,7 +63,7 @@ mappings:
   local-rules: # 1.2.3.1
     sources:
       - op-source
-    s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])
+    s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)
     po:
       - p: era:localRulesOrRestrictions
         o:
@@ -89,6 +88,6 @@ mappings:
   local-rules-doc: # 1.2.3.2
     sources:
       - op-source
-    s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])
+    s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)
     po:
       - [era:localRulesOrRestrictionsDoc, "$(OPRules/OPRulesParameter[@ID='RUL_LocalRulesOrRestrictionsDocRef' and @IsApplicable='Y']/@Value)"]

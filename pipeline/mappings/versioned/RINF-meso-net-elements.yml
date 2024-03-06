@@ -22,8 +22,8 @@ mappings:
       - [a, era:NetElement]
       - [rdfs:label, $(OPName/@Value)]
 #      - [era:hasImplementation, "http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)/$((@ValidityDateStart,'1970-01-01 '\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])~iri"]
-      - [era:hasImplementation, "http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$((if(UniqueOPID[matches(@Value,'^EU0'\)]\) then concat(parent::*/MemberStateCode/@Code,'/',UniqueOPID/@Value\) else UniqueOPID/@Value\))/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])~iri"]
-#      - [era:hasImplementation, "http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)~iri"]
+#      - [era:hasImplementation, "http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$((if(UniqueOPID[matches(@Value,'^EU0'\)]\) then concat(parent::*/MemberStateCode/@Code,'/',UniqueOPID/@Value\) else UniqueOPID/@Value\))/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])~iri"]
+      - [era:hasImplementation, "http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UniqueOPID/@Value)~iri"]
 
   # ----------------------Define Meso NetElements from Sections of Line---------------------
 
@@ -34,5 +34,5 @@ mappings:
     po:
       - [a, era:NetElement]
       - [rdfs:label, $(SOLLineIdentification/@Value)_$(SOLOPStart/@Value)_$(SOLOPEnd/@Value)]
-      - [era:hasImplementation, "http://data.europa.eu/949/functionalInfrastructure/sectionsOfLine/$(SOLLineIdentification/@Value)_$(SOLOPStart/@Value)_$(SOLOPEnd/@Value)/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])~iri"]
-#      - [era:hasImplementation, "http://data.europa.eu/949/functionalInfrastructure/sectionsOfLine/$(SOLLineIdentification/@Value)_$(SOLOPStart/@Value)_$(SOLOPEnd/@Value)~iri"]
+#      - [era:hasImplementation, "http://data.europa.eu/949/functionalInfrastructure/sectionsOfLine/$(SOLLineIdentification/@Value)_$(SOLOPStart/@Value)_$(SOLOPEnd/@Value)/$((@ValidityDateStart,'1970-01-01'\)[1])_$((@ValidityDateEnd,'3100-12-31'\)[1])~iri"]
+      - [era:hasImplementation, "http://data.europa.eu/949/functionalInfrastructure/sectionsOfLine/$(SOLLineIdentification/@Value)_$(SOLOPStart/@Value)_$(SOLOPEnd/@Value)~iri"]
