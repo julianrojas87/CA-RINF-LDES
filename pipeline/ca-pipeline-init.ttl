@@ -443,7 +443,7 @@
   js:dataInput <sds/reader>;
   js:metadataInput <sdsMetadataSource>;
   js:database [
-    js:url <mongodb://mongodb:27017/rinf-ldes>;
+    js:url <mongodb://user:password@mongodb:27017/rinf-ldes?authSource=admin>;
     js:metadata "METADATA";
     js:data "DATA";
     js:index "INDEX";
