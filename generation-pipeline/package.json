@@ -1,6 +1,6 @@
 {
-  "name": "ca-rinf-ldes",
-  "version": "0.0.1",
+  "name": "ca-ldes-generate",
+  "version": "0.1.0",
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
@@ -10,7 +10,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@ajuvercr/js-runner": "^0.1.15",
+    "@ajuvercr/js-runner": "^0.1.16",
     "@treecg/sds-storage-writer-mongo": "^0.2.6",
     "file-utils-processors-ts": "^0.5.2",
     "rml-mapper-processor-ts": "^0.6.3",

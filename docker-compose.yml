@@ -14,8 +14,9 @@ services:
         restart: always
         networks:
           - ldes
-    pipeline:
-        build: ./pipeline
+    generation-pipeline:
+        container_name: generation-pipeline
+        build: ./generation-pipeline
         ports:
           - 3333:3333
         volumes:
@@ -29,7 +30,7 @@ services:
         build: ./ldes-server
         ports:
           - 3000:3000
-        command: -b http://localhost:3000
+        command: -b https://era.ilabt.imec.be
         networks:
           - ldes
         depends_on:
