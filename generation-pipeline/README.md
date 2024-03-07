@@ -1,6 +1,6 @@
-# LDES Generation pipeline
+# LDES generation pipeline
 
-This system component is a [Connector Architecture](https://the-connector-architecture.github.io/site/docs/1_Home)-based pipeline that performs a set of data transformations to create a Linked Data Event Stream (LDES).
+This system component is a [Connector Architecture](https://the-connector-architecture.github.io/site/docs/1_Home)-based pipeline that performs a set of data transformations to create a [Linked Data Event Stream (LDES)](https://w3id.org/ldes/specification).
 
 In this particular case, the pipeline's main goal is to transform the original RINF data, which is given in the form of XML documents following the [RINF XSD schema](https://www.era.europa.eu/system/files?file=2022-11/rinf_schema_en.xsd), into a RDF representation of the data, according to the [ERA Vocabulary](https://data-interop.era.europa.eu/era-vocabulary/). Furthermore, the resulting RDF data is targeted to be published in the form of a LDES, which entails creating versioned instances of a predefined set of classes as specified in the data model at hand (i.e., the ERA Vocabulary). A schematic overview of the complete pipeline can be seen next, followed by a detailed description of every step in the workflow.
 
