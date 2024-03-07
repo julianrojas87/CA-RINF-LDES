@@ -9,7 +9,7 @@ A high-level overview of such components can be seen in the following diagram:
 
 ![High-level overview](docs/high-level.svg)
 
-For a more detailed description of each component, check each their corresponding README documents:
+For a more detailed description of each component, check each their corresponding README documents: 
 
 * [LDES generation pipeline](https://github.com/julianrojas87/CA-RINF-LDES/blob/main/generation-pipeline/README.md)
 * [LDES server](https://github.com/julianrojas87/CA-RINF-LDES/blob/main/ldes-server/README.md)
