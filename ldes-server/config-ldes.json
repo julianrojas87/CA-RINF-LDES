@@ -121,7 +121,7 @@
             "metaCollection": "METADATA",
             "indexCollection": "INDEX",
             "membersCollection": "DATA",
-            "dbUrl": "mongodb://user:password@mongodb:27017/rinf-ldes?authSource=admin"
+            "dbUrl": "mongodb://root:example@mongodb:27017/rinf-ldes?authSource=admin"
         },
         {
             "@id": "urn:solid-server:default:relative-path",

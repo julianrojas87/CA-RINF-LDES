@@ -9,14 +9,14 @@ A high-level overview of such components can be seen in the following diagram:
 
 ![High-level overview](docs/high-level.svg)
 
-For a more detailed description of each component, check each their corresponding README documents: 
+For a more detailed description of each component, check each their corresponding README documents:
 
 * [LDES generation pipeline](https://github.com/julianrojas87/CA-RINF-LDES/blob/main/generation-pipeline/README.md)
 * [LDES server](https://github.com/julianrojas87/CA-RINF-LDES/blob/main/ldes-server/README.md)
 * [LDES consumption pipeline](https://github.com/julianrojas87/CA-RINF-LDES/blob/main/consumption-pipeline/README.md)
 * [RDF graph store](https://github.com/julianrojas87/CA-RINF-LDES/blob/main/rdf-graph-store/README.md)
 
-## What is LDES?
+## What is a LDES?
 
 Linked Data Event Stream (LDES) is a RDF data publishing approach fostered by the EU Semantic Interoperability Community ([SEMIC](https://joinup.ec.europa.eu/collection/semic-support-centre/linked-data-event-streams-ldes)) and officially adopted as a standard specification by the Flemish government through its
 [Flemish Smart Data Space project](https://www.vlaanderen.be/vlaamse-smart-data-space-portaal). LDES defines datasets in terms of a collection of immutable objects (aka. members) such as versioned entities or observations, where every member must have its own unique IRI. The main goal of a LDES is to enable efficient replication and synchronization of datasets over the Web. LDES allows data consumers to traverse the collection of members by relying on the [TREE specification](https://w3id.org/tree/specification/) to semantically describe hypermedia relations among subsets or fragments of the data. These hypermedia relations can be configured in multiple ways, e.g. by publishing fragments organized by time or by version. TREE also allows further describing the content of each member by means of a [SHACL](https://www.w3.org/TR/shacl/) shape, which allows data consumers to understand the type and properties of the LDES members.
