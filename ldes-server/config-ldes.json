@@ -69,7 +69,7 @@
                         "@type": "RepresentationConvertingStore",
                         "source": {
                             "@type": "LDESStore",
-                            "id": "http://localhost:3000/rinf/ldes",
+                            "id": "https://era.ilabt.imec.be/rinf/ldes",
                             "base": {
                                 "@id": "urn:solid-server:default:variable:baseUrl"
                             },
@@ -83,7 +83,7 @@
                                     "prefix": "temporal-view",
                                     "view": {
                                         "@type": "MongoSDSView",
-                                        "descriptionId": "http://localhost:3000/rinf/ldes/#timestampFragmentation",
+                                        "descriptionId": "https://era.ilabt.imec.be/rinf/ldes/#timestampFragmentation",
                                         "streamId": "https://era.ilabt.imec.be/ldes/metadata#generation-stream",
                                         "db": {
                                             "@id": "urn:solid-server:default:DBConfig"
