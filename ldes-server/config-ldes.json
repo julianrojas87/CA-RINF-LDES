@@ -90,6 +90,18 @@
                                         }
                                     }
                                 }
+                            ],
+                            "shapes": [
+                                "shapes/contact-line-system.ttl",
+                                "shapes/etcs-level.ttl",
+                                "shapes/load-capability.ttl",
+                                "shapes/national-railway-line.ttl",
+                                "shapes/net-element.ttl",
+                                "shapes/net-relation.ttl",
+                                "shapes/operational-point.ttl",
+                                "shapes/section-of-line.ttl",
+                                "shapes/track.ttl",
+                                "shapes/train-detection-system.ttl"
                             ]
                         },
                         "options_outConverter": {
@@ -121,7 +133,7 @@
             "metaCollection": "METADATA",
             "indexCollection": "INDEX",
             "membersCollection": "DATA",
-            "dbUrl": "mongodb://root:example@mongodb:27017/rinf-ldes?authSource=admin"
+            "dbUrl": "mongodb://era:rinfldes@localhost:27017/rinf-ldes?authSource=admin"
         },
         {
             "@id": "urn:solid-server:default:relative-path",

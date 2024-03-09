@@ -5,6 +5,6 @@
     },
     "dependencies": {
         "@solid/community-server": "^7.0.4",
-        "ldes-solid-server": "^0.0.13"
+        "ldes-solid-server": "^0.0.14"
     }
 }
