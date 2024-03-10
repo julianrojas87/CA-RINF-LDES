@@ -58,5 +58,6 @@ ex:rmlStream a sds:Stream;
       dcat:title "RINF LDES";
       dcat:publisher <https://julianrojas.org/#me>;
       ldes:timestampPath dct:modified;
-      dcat:identifier <http://localhost:3000/rinf/ldes>
+      ldes:versionOfPath dct:isVersionOf;
+      dcat:identifier <https://era.ilabt.imec.be/rinf/ldes>
   ].
