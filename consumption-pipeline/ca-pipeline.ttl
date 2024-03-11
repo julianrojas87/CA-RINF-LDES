@@ -1,0 +1,144 @@
+@prefix js: <https://w3id.org/conn/js#>.
+@prefix : <https://w3id.org/conn#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix idlab-fn: <https://w3id.org/imec/idlab/function#>.
+@prefix as: <https://www.w3.org/ns/activitystreams#>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix formats: <http://www.w3.org/ns/formats/>.
+@prefix era: <http://data.europa.eu/949/>.
+@prefix ldes: <https://w3id.org/ldes#>.
+
+<> owl:imports <./node_modules/@ajuvercr/js-runner/ontology.ttl>,
+    <./node_modules/ldes-client/processor.ttl>,
+    <./node_modules/sparql-ingest-processor-ts/processors.ttl>,
+    <./node_modules/@ajuvercr/js-runner/processor/resc.ttl>. # Testing procesor
+
+#########################################
+# Channel definitions
+#########################################
+
+# Channel for js:LdesClient → js:SPARQLIngest
+<raw-member/reader> a js:JsReaderChannel.
+<raw-member/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <raw-member/reader>;
+   :writer <raw-member/writer>.
+
+<test/reader> a js:JsReaderChannel.
+<test/writer> a js:JsWriterChannel.
+[ ] a js:JsChannel;
+   :reader <test/reader>;
+   :writer <test/writer>.
+
+#########################################
+# Processor definitions
+#########################################
+
+# Processor to read member events from a LDES
+[ ] a js:LdesClient;
+    js:output <raw-member/writer>;
+    js:url <https://era.ilabt.imec.be/rinf/ldes>;
+    js:ordered "ascending";
+    js:follow false;
+    js:materialize true.
+    #js:before "2024-03-08T12:00:00.000Z"^^xsd:dateTime.
+    #js:savePath <./state/save.json>.
+
+[ ] a js:SPARQLIngest; 
+    js:memberStream <raw-member/reader>;
+    js:ingestConfig [
+        js:memberIsGraph false;
+        js:memberShape """
+            @prefix sh: <http://www.w3.org/ns/shacl#>.
+            @prefix era: <http://data.europa.eu/949/>.
+
+            [ ] a sh:NodeShape;
+                sh:targetClass era:NationalRailwayLine.
+        """, """
+            @prefix sh: <http://www.w3.org/ns/shacl#>.
+            @prefix era: <http://data.europa.eu/949/>.
+
+            [ ] a sh:NodeShape;
+                sh:targetClass era:SectionOfLine.
+        """, """
+            @prefix sh: <http://www.w3.org/ns/shacl#>.
+            @prefix era: <http://data.europa.eu/949/>.
+            @prefix gsp: <http://www.opengis.net/ont/geosparql#>.
+
+            [ ] a sh:NodeShape;
+                sh:targetClass era:OperationalPoint;
+                sh:property [
+                    sh:path gsp:hasGeometry;
+                    sh:node [
+                    a sh:NodeShape;
+                    sh:targetClass gsp:Geometry
+                    ]
+                ], [
+                    sh:path era:lineReference;
+                    sh:node [
+                    a sh:NodeShape;
+                    sh:targetClass era:LineReference
+                    ]
+                ].
+        """, """
+            @prefix sh: <http://www.w3.org/ns/shacl#>.
+            @prefix era: <http://data.europa.eu/949/>.
+
+            [ ] a sh:NodeShape;
+                sh:targetClass era:NetElement.
+        """, """
+            @prefix sh: <http://www.w3.org/ns/shacl#>.
+            @prefix era: <http://data.europa.eu/949/>.
+
+            [ ] a sh:NodeShape;
+                sh:targetClass era:NetRelation.
+        """, """
+            @prefix sh: <http://www.w3.org/ns/shacl#>.
+            @prefix era: <http://data.europa.eu/949/>.
+
+            [ ] a sh:NodeShape;
+                sh:targetClass era:Track.
+        """, """
+            @prefix sh: <http://www.w3.org/ns/shacl#>.
+            @prefix era: <http://data.europa.eu/949/>.
+
+            [ ] a sh:NodeShape;
+                sh:targetClass era:LoadCapability.
+        """, """
+            @prefix sh: <http://www.w3.org/ns/shacl#>.
+            @prefix era: <http://data.europa.eu/949/>.
+
+            [ ] a sh:NodeShape;
+                sh:targetClass era:ContactLineSystem.
+        """, """
+            @prefix sh: <http://www.w3.org/ns/shacl#>.
+            @prefix era: <http://data.europa.eu/949/>.
+
+            [ ] a sh:NodeShape;
+                sh:targetClass era:ETCSLevel.
+        """, """
+            @prefix sh: <http://www.w3.org/ns/shacl#>.
+            @prefix era: <http://data.europa.eu/949/>.
+
+            [ ] a sh:NodeShape;
+                sh:targetClass era:TrainDetectionSystem.
+        """;
+        js:changeSemantics [
+            js:changeTypePath era:lifecycleType;
+            js:createValue as:Create;
+            js:updateValue as:Update;
+            js:deleteValue as:Delete
+        ];
+        js:targetNamedGraph <http://data.europa.eu/949/graph/rinf>;
+        #js:transactionConfig [
+        #    js:transactionIdPath ldes:transactionId;
+        #    js:transactionEndPath ldes:isLastOfTransaction
+        #];
+        js:graphStoreUrl <http://localhost:8891/sparql>
+    ];
+    js:sparqlWriter <test/writer>.
+
+#[ ] a js:Resc;
+#    js:rescReader <test/reader>.
+

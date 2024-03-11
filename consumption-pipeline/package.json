@@ -1,0 +1,17 @@
+{
+  "name": "ca-ldes-consume",
+  "version": "0.1.0",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@ajuvercr/js-runner": "^0.1.17",
+    "ldes-client": "https://github.com/TREEcg/ldes-client.git#feat/transactions",
+    "sparql-ingest-processor-ts": "^0.2.4"
+  }
+}
