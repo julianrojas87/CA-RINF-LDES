@@ -72,7 +72,7 @@ Lastly, replace `{PIPELINE}` by the CA pipeline name to be executed:
 New data source updates can be posted to a running pipeline as follows:
 
 ```bash
-curl -v "content-type: application/octect-stream" --data-binary "@/path/to/file.zip" {PIPELINE_SERVER}:{HTTP_PORT}
+curl -v -H "content-type: application/octect-stream" --data-binary "@/path/to/file.zip" {PIPELINE_SERVER}:{HTTP_PORT}
 ```
 
 Replace `{PIPELINE_SERVER}` by the public address of the server where the pipelines runs and replace `{HTTP_PORT}` by the exposed port of the Docker container.
