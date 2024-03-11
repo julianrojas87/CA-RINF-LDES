@@ -4,4 +4,4 @@ This system component is a [Connector Architecture](https://the-connector-archit
 
 In this particular case, we define a pipeline using a CA processor that encapsulates this [LDES client](https://www.npmjs.com/package/ldes-client) implementation, and writes all extracted entity updates into a Virtuoso RDF graph store. Next, a schematic view of this pipeline is shown followed by a description of each processor.
 
-![Schematic overview](../docs/consumption.svg.svg)
+![Schematic overview](../docs/consumption.svg)
