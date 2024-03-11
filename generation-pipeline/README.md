@@ -4,7 +4,7 @@ This system component is a [Connector Architecture](https://the-connector-archit
 
 In this particular case, the pipeline's main goal is to transform the original RINF data, which is given in the form of XML documents following the [RINF XSD schema](https://www.era.europa.eu/system/files?file=2022-11/rinf_schema_en.xsd), into a RDF representation of the data, according to the [ERA Vocabulary](https://data-interop.era.europa.eu/era-vocabulary/). Furthermore, the resulting RDF data is targeted to be published in the form of a LDES, which entails creating versioned instances of a predefined set of classes as specified in the data model at hand (i.e., the ERA Vocabulary). A schematic overview of the complete pipeline can be seen next, followed by a detailed description of every step in the workflow.
 
-![Schematic overview](../docs/overview.svg)
+![Schematic overview](../docs/generation.svg)
 
 This diagram corresponds to the CA pipeline described by [`pipeline/ca-pipeline-init.ttl`](https://github.com/julianrojas87/CA-RINF-LDES/blob/main/generation-pipeline/ca-pipeline-init.ttl). A visualization of [`pipeline/ca-pipeline.ttl`](https://github.com/julianrojas87/CA-RINF-LDES/blob/main/generation-pipeline/ca-pipeline.ttl) would be the same, except for the `RINF-XML (initial set of data)` and the related `js:GlobRead` processor.
 

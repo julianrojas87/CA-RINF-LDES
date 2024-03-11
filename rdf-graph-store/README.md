@@ -20,7 +20,7 @@ Make sure to set an appropriate `DBA_PASSWORD`.
 
 **⚠️Warning⚠️**: For this demonstrator, we allow full unrestricted SPARQL UPDATE permission over all named graphs. However, for production deployments, proper security and access control configurations should be made. See [the documentation](https://docs.openlinksw.com/virtuoso/rdfsparqlprotocolendpoint/#rdfsupportedprotocolendpointurisparqlauthex) for Virtuoso.
 
-1. Login with your `dba` credential on http://{your_virtuoso_address}/conductor.
+1. Login with your `dba` credential on `http://{your_virtuoso_address}/conductor`.
 2. Navigate to `Database` > `Interactive SQL`.
 3. Execute the following command to authorize update operations for all named graphs:
 
