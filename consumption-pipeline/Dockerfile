@@ -5,7 +5,5 @@ WORKDIR /opt/pipeline
 COPY . .
 # Install dependencies
 RUN bun install
-# Expose input HTTP port
-EXPOSE 3333
 # Container's entrypoint command
-ENTRYPOINT [ "bunx", "--bun", "js-runner" ]
+ENTRYPOINT [ "bunx", "--bun", "js-runner", "ca-pipeline.ttl" ]

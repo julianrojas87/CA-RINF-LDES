@@ -131,14 +131,11 @@
             js:deleteValue as:Delete
         ];
         js:targetNamedGraph <http://data.europa.eu/949/graph/rinf>;
+        js:graphStoreUrl <http://192.168.1.56:8891/sparql>
         #js:transactionConfig [
         #    js:transactionIdPath ldes:transactionId;
         #    js:transactionEndPath ldes:isLastOfTransaction
         #];
-        js:graphStoreUrl <http://localhost:8891/sparql>
+        #js:graphStoreUrl <http://localhost:8891/sparql>
     ];
     js:sparqlWriter <test/writer>.
-
-#[ ] a js:Resc;
-#    js:rescReader <test/reader>.
-

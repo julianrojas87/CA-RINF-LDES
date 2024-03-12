@@ -48,13 +48,13 @@ Multiple processors are used in these pipelines, taking care of specific tasks:
 First build a container from the [`Dockerfile`](https://github.com/julianrojas87/CA-RINF-LDES/blob/main/generation-pipeline/Dockerfile) present in this repository:
 
 ```bash
-docker build -t rinf-ldes .
+docker build -t generation-pipeline .
 ```
 
 Then execute the container as follows:
 
 ```bash
-docker run -p {HTTP_PORT}:3333 --volume={STATE_PATH}:/opt/generation-pipeline/state rinf-ldes {PIPELINE}
+docker run -p {HTTP_PORT}:3333 --volume={STATE_PATH}:/opt/generation-pipeline/state generation-pipeline {PIPELINE}
 ```
 
 Replace `${HTTP_PORT}` for the local TCP port where new updates can be posted via HTTP.

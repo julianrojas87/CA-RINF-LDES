@@ -35,6 +35,24 @@ services:
           - ldes
         depends_on:
           - mongodb
+    consumption-pipeline:
+        container_name: consumption-pipeline
+        build: ./consumption-pipeline
+        networks:
+          - ldes
+        depends_on:
+          - ldes-server
+          - virtuoso
+    virtuoso:
+        container_name: virtuoso
+        image: openlink/virtuoso-opensource-7:latest
+        ports:
+          - 1111:1111
+          - 8890:8890
+        restart: always
+        networks:
+          - ldes
+
 
 networks:
     ldes:
