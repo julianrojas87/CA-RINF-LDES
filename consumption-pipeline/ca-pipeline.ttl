@@ -40,7 +40,7 @@
     js:output <raw-member/writer>;
     js:url <https://era.ilabt.imec.be/rinf/ldes>;
     js:ordered "ascending";
-    js:follow false;
+    js:follow true;
     js:materialize true.
     #js:before "2024-03-08T12:00:00.000Z"^^xsd:dateTime.
     #js:savePath <./state/save.json>.
