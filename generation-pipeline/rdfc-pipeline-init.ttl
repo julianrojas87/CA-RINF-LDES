@@ -362,24 +362,36 @@
    js:output <sds/writer>;
    js:stream <https://era.ilabt.imec.be/ldes/metadata#generation-stream>;
    js:timestampPath dct:modified;
-   js:shapeFilter """
+   js:typeFilter era:NationalRailwayLine, era:SectionOfLine, era:OperationalPoint, 
+      era:NetElement, era:NetRelation, era:Track, era:LoadCapability, era:ContactLineSystem, 
+      era:ETCSLevel, era:TrainDetectionSystem;
+   js:shape """
       @prefix sh: <http://www.w3.org/ns/shacl#>.
-      @prefix era: <http://data.europa.eu/949/>.
-
-      [ ] a sh:NodeShape;
-         sh:targetClass era:NationalRailwayLine.
-   """, """
-      @prefix sh: <http://www.w3.org/ns/shacl#>.
-      @prefix era: <http://data.europa.eu/949/>.
-
-      [ ] a sh:NodeShape;
-         sh:targetClass era:SectionOfLine.
-   """, """
-      @prefix sh: <http://www.w3.org/ns/shacl#>.
-      @prefix era: <http://data.europa.eu/949/>.
       @prefix gsp: <http://www.opengis.net/ont/geosparql#>.
+      @prefix era: <http://data.europa.eu/949/>.
+      @prefix era-sh: <http://data.europa.eu/949/shapes/>.
 
       [ ] a sh:NodeShape;
+         sh:xone (
+            era-sh:nationalRailwayLineShape
+            era-sh:sectionOfLineShape
+            era-sh:operationalPointShape
+            era-sh:netElementShape
+            era-sh:netRelationShape
+            era-sh:trackShape
+            era-sh:loadCapabilityShape
+            era-sh:contactLineSystemShape
+            era-sh:etcsLevelShape
+            era-sh:trainDetectionSystemShape
+         ).
+      
+      era-sh:nationalRailwayLineShape a sh:NodeShape;
+         sh:targetClass era:NationalRailwayLine.
+
+      era-sh:sectionOfLineShape a sh:NodeShape;
+         sh:targetClass era:SectionOfLine.
+      
+      era-sh:operationalPointShape a sh:NodeShape;
          sh:targetClass era:OperationalPoint;
          sh:property [
             sh:path gsp:hasGeometry;
@@ -394,47 +406,26 @@
                sh:targetClass era:LineReference
             ]
          ].
-   """, """
-      @prefix sh: <http://www.w3.org/ns/shacl#>.
-      @prefix era: <http://data.europa.eu/949/>.
 
-      [ ] a sh:NodeShape;
+      era-sh:netElementShape a sh:NodeShape;
          sh:targetClass era:NetElement.
-   """, """
-      @prefix sh: <http://www.w3.org/ns/shacl#>.
-      @prefix era: <http://data.europa.eu/949/>.
 
-      [ ] a sh:NodeShape;
+      era-sh:netRelationShape a sh:NodeShape;
          sh:targetClass era:NetRelation.
-   """, """
-      @prefix sh: <http://www.w3.org/ns/shacl#>.
-      @prefix era: <http://data.europa.eu/949/>.
 
-      [ ] a sh:NodeShape;
+      era-sh:trackShape a sh:NodeShape;
          sh:targetClass era:Track.
-   """, """
-      @prefix sh: <http://www.w3.org/ns/shacl#>.
-      @prefix era: <http://data.europa.eu/949/>.
 
-      [ ] a sh:NodeShape;
+      era-sh:loadCapabilityShape a sh:NodeShape;
          sh:targetClass era:LoadCapability.
-   """, """
-      @prefix sh: <http://www.w3.org/ns/shacl#>.
-      @prefix era: <http://data.europa.eu/949/>.
 
-      [ ] a sh:NodeShape;
+      era-sh:contactLineSystemShape a sh:NodeShape;
          sh:targetClass era:ContactLineSystem.
-   """, """
-      @prefix sh: <http://www.w3.org/ns/shacl#>.
-      @prefix era: <http://data.europa.eu/949/>.
 
-      [ ] a sh:NodeShape;
+      era-sh:etcsLevelShape a sh:NodeShape;
          sh:targetClass era:ETCSLevel.
-   """, """
-      @prefix sh: <http://www.w3.org/ns/shacl#>.
-      @prefix era: <http://data.europa.eu/949/>.
-
-      [ ] a sh:NodeShape;
+      
+      era-sh:trainDetectionSystemShape a sh:NodeShape;
          sh:targetClass era:TrainDetectionSystem.
    """.
 

@@ -21,39 +21,37 @@ services:
           - 3333:3333
         volumes:
           - /users/jrojasme/rml-state:/opt/pipeline/state
-        command: ca-pipeline.ttl
+        command: rdfc-pipeline.ttl
         networks:
           - ldes
         depends_on:
           - mongodb
-    ldes-server:
-        build: ./ldes-server
-        ports:
-          - 3000:3000
-        command: -b https://era.ilabt.imec.be
-        networks:
-          - ldes
-        depends_on:
-          - mongodb
-    consumption-pipeline:
-        container_name: consumption-pipeline
-        build: ./consumption-pipeline
-        networks:
-          - ldes
-        depends_on:
-          - ldes-server
-          - virtuoso
-    virtuoso:
-        container_name: virtuoso
-        image: openlink/virtuoso-opensource-7:latest
-        ports:
-          - 1111:1111
-          - 8890:8890
-        restart: always
-        networks:
-          - ldes
-
-
+    # ldes-server:
+    #     build: ./ldes-server
+    #     ports:
+    #       - 3000:3000
+    #     command: -b https://era.ilabt.imec.be
+    #     networks:
+    #       - ldes
+    #     depends_on:
+    #       - mongodb
+    # consumption-pipeline:
+    #     container_name: consumption-pipeline
+    #     build: ./consumption-pipeline
+    #     networks:
+    #       - ldes
+    #     depends_on:
+    #       - ldes-server
+    #       - virtuoso
+    # virtuoso:
+    #     container_name: virtuoso
+    #     image: openlink/virtuoso-opensource-7:latest
+    #     ports:
+    #       - 1111:1111
+    #       - 8890:8890
+    #     restart: always
+    #     networks:
+    #       - ldes
 networks:
     ldes:
       name: ldes-network

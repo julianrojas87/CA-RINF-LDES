@@ -15,4 +15,4 @@ RUN cd node_modules/prefix-ns && rm data.json && bun preinstall.js
 # Expose input HTTP port
 EXPOSE 3333
 # Container's entrypoint command
-ENTRYPOINT [ "bunx", "--bun", "js-runner" ]
+ENTRYPOINT [ "bunx", "--bun", "@rdfc/js-runner" ]

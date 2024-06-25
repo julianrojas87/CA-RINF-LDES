@@ -6,4 +6,4 @@ COPY . .
 # Install dependencies
 RUN bun install
 # Container's entrypoint command
-ENTRYPOINT [ "bunx", "--bun", "js-runner", "ca-pipeline.ttl" ]
+ENTRYPOINT [ "bunx", "--bun", "@rdfc/js-runner", "rdfc-pipeline.ttl" ]

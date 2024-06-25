@@ -7,11 +7,11 @@
     "bun-types": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5.3.3"
+    "typescript": "^5.5.2"
   },
   "dependencies": {
-    "@ajuvercr/js-runner": "^0.1.17",
+    "@rdfc/js-runner": "^0.2.1",
     "ldes-client": "https://github.com/TREEcg/ldes-client.git#feat/transactions",
-    "sparql-ingest-processor-ts": "^0.2.4"
+    "@rdfc/sparql-ingest-processor-ts": "^0.3.0"
   }
 }
