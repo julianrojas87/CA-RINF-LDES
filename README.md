@@ -23,7 +23,7 @@ Linked Data Event Stream (LDES) is a RDF data publishing approach fostered by th
 
 ## What is the RDF-Connect?
 
-The [RDF-Connect](https://rdf-connect.github.io/rdfc.github.io/) allows to declaratively define the set of steps of a (streaming) data processing workflow in the form of an RDF document. This document can be taken up by a (set of) RDF-Connect Runner(s) dedicated to a particular execution environment (i.e., Javascript, Java, Python, Rust, etc), and execute the defined workflow process. Every data transformation step defined in the workflow is declared by instantiating an existing `rdfc:ProcessClass`, which can be implemented in any programming language as long as there exists a dedicated RDF-Connect Runner for that language. Communication between processors are defined via instances of `rdfc:Channel`s.
+[RDF-Connect](https://rdf-connect.github.io/rdfc.github.io/) allows to declaratively define the set of steps of a (streaming) data processing workflow in the form of an RDF document. This document can be taken up by a (set of) RDF-Connect Runner(s) dedicated to a particular execution environment (i.e., Javascript, Java, Python, Rust, etc), and execute the defined workflow process. Every data transformation step defined in the workflow is declared by instantiating an existing `rdfc:ProcessClass`, which can be implemented in any programming language as long as there exists a dedicated RDF-Connect Runner for that language. Communication between processors are defined via instances of `rdfc:Channel`s.
 
 ## Run with docker-compose
 
