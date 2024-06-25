@@ -1,20 +1,20 @@
 {
   "name": "ca-ldes-generate",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
     "bun-types": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@ajuvercr/js-runner": "^0.1.17",
-    "@treecg/sds-storage-writer-mongo": "^0.2.6",
-    "file-utils-processors-ts": "^0.5.3",
-    "rml-mapper-processor-ts": "^0.6.3",
-    "sds-processors": "^0.3.2",
-    "xml-utils-processors-ts": "^0.2.1"
+    "@rdfc/file-utils-processors-ts": "^0.5.4",
+    "@rdfc/js-runner": "^0.2.1",
+    "@rdfc/rml-utils-processor-ts": "^0.6.5",
+    "@rdfc/sds-processors-ts": "^0.5.2",
+    "@rdfc/sds-storage-writer-ts": "^0.2.7",
+    "@rdfc/xml-utils-processors-ts": "^0.2.2"
   }
 }

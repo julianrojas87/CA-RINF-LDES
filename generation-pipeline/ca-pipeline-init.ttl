@@ -7,15 +7,15 @@
 @prefix formats: <http://www.w3.org/ns/formats/>.
 @prefix era: <http://data.europa.eu/949/>.
 
-<> owl:imports <./node_modules/@ajuvercr/js-runner/ontology.ttl>,
-   <./node_modules/@ajuvercr/js-runner/channels/file.ttl>,
-   <./node_modules/@ajuvercr/js-runner/channels/http.ttl>,
-   <./node_modules/file-utils-processors-ts/processors.ttl>,
-   <./node_modules/xml-utils-processors-ts/processors.ttl>,
-   <./node_modules/rml-mapper-processor-ts/processors.ttl>,
-   <./node_modules/sds-processors/configs/sdsify.ttl>,
-   <./node_modules/sds-processors/configs/stream_join.ttl>,
-   <./node_modules/@treecg/sds-storage-writer-mongo/processor.ttl>.
+<> owl:imports <./node_modules/@rdfc/js-runner/ontology.ttl>,
+   <./node_modules/@rdfc/js-runner/channels/file.ttl>,
+   <./node_modules/@rdfc/js-runner/channels/http.ttl>,
+   <./node_modules/@rdfc/file-utils-processors-ts/processors.ttl>,
+   <./node_modules/@rdfc/xml-utils-processors-ts/processors.ttl>,
+   <./node_modules/@rdfc/rml-utils-processor-ts/processors.ttl>,
+   <./node_modules/@rdfc/sds-processors-ts/configs/sdsify.ttl>,
+   <./node_modules/@rdfc/sds-processors-ts/configs/stream_join.ttl>,
+   <./node_modules/@rdfc/sds-storage-writer-ts/processor.ttl>.
 
 #########################################
 # Channel definitions
@@ -354,7 +354,7 @@
       js:output <ldes-raw/writer>
    ];
    js:mappings <rml/joined/reader>;
-   js:rmlJar <https://github.com/RMLio/rmlmapper-java/releases/download/v6.5.1/rmlmapper-6.5.1-r371-all.jar>.
+   js:rmlJar <https://github.com/RMLio/rmlmapper-java/releases/download/v7.0.0/rmlmapper-7.0.0-r374-all.jar>.
 
 # Processor to describe every entity as part of a SDS stream for further processing
 [ ] a js:Sdsify;
