@@ -91,7 +91,7 @@
                                     }
                                 }
                             ],
-                            "shape": "shapes/rinf-shape.ttl"
+                            "shape": "shape/rinf-shape.ttl"
                         },
                         "options_outConverter": {
                             "@id": "urn:solid-server:default:RepresentationConverter"
