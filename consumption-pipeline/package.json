@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@rdfc/js-runner": "^0.2.1",
-    "ldes-client": "https://github.com/TREEcg/ldes-client.git#feat/transactions",
+    "ldes-client": "https://github.com/rdf-connect/ldes-client.git#feat/transactions",
     "@rdfc/sparql-ingest-processor-ts": "^0.3.0"
   }
 }
